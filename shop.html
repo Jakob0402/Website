@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bestelle jetzt!</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #FFFFFF;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #2d98da;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+    h2 {
+      color: #2d98da;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .products {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .product-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 30%;
+      margin-bottom: 20px;
+      text-align: center;
+      transition: transform 0.2s ease-in-out;
+      position: relative;
+    }
+    .product-card:hover {
+      transform: scale(1.05);
+    }
+    .product-card h3 {
+      font-size: 1.5rem;
+      margin: 10px 0;
+      color: #333;
+    }
+    .product-card p {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+    .product-card input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      margin-top: 5px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: center;
+    }
+    .product-card button {
+      background-color: #2d98da;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+    .product-card button:hover {
+      background-color: #218cbe;
+    }
+    #cart-items {
+      list-style: none;
+      padding: 0;
+    }
+    #cart-items li {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    #cart-items li span {
+      flex-grow: 1;
+    }
+    #cart-items li input[type="number"] {
+      width: 50px;
+      padding: 5px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: center;
+      margin-right: 10px;
+    }
+    #total-price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #333;
+    }
+    .confirmation {
+      background-color: #28a745;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+      margin-top: 30px;
+      display: none;
+    }
+    .form-container {
+      margin-top: 40px;
+      padding: 30px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+      color: #333;
+    }
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    input[type="submit"] {
+      background-color: #2d98da;
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      font-size: 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+    input[type="submit"]:hover {
+      background-color: #218cbe;
+    }
+    #searchInput {
+      margin-top: 20px;
+      padding: 12px;
+      font-size: 1rem;
+      width: 80%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #adminControls {
+      display: none;
+      margin-top: 20px;
+      gap: 10px;
+      justify-content: center;
+    }
+    #adminControls button {
+      background-color: #555;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #adminControls button:hover {
+      background-color: #333;
+    }
+    /* Admin Bereich Bestellungen */
+    #ordersList {
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      background: #f9f9f9;
+      font-size: 0.9rem;
+    }
+    #ordersList h3 {
+      margin-top: 0;
+      color: #2d98da;
+    }
+    #ordersList ul {
+      list-style: none;
+      padding-left: 0;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+    #ordersList ul li {
+      border-bottom: 1px solid #ddd;
+      padding: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Bestelle jetzt!</h1>
+    <input type="text" id="searchInput" placeholder="Produkte suchen..." oninput="filterProducts()" />
+  </header>
+
+  <div class="container">
+    <section class="products" id="productList">
+      <!-- Produkte werden per JS gerendert -->
+    </section>
+
+    <h2>Warenkorb</h2>
+    <ul id="cart-items"></ul>
+    <p id="total-price">Gesamtpreis: 0.00€</p>
+  </div>
+
+  <div class="container form-container">
+    <h2>Bestellformular</h2>
+    <form id="bestellForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="adresse">Adresse:</label>
+      <input type="text" id="adresse" name="adresse" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+
+      <input type="submit" value="Bestellen" />
+    </form>
+
+    <input type="submit" value="Home" onclick="window.location.href='index.html';" />
+
+    <div id="adminControls">
+      <button id="addProductBtn">Neues Produkt hinzufügen</button>
+      <button id="logoutBtn">Admin Logout</button>
+
+      <div id="ordersList">
+        <h3>Eingegangene Bestellungen</h3>
+        <ul id="ordersUl"></ul>
+      </div>
+    </div>
+
+    <div class="confirmation">
+      <h3>Vielen Dank für deine Bestellung!</h3>
+    </div>
+  </div>
+
+  <script>
+    // Feste, unveränderbare Produkte (immutable)
+    const immutableProducts = [
+      { id: 0, name: 'Kegel', price: 2.7, description: 'Ein klassischer Kegel aus Holz.', fixedPrice: true, immutable: true },
+      { id: 1, name: 'Gyrofidget', price: 3.0, description: 'Ein spannendes Spielzeug, das sich dreht und dreht.', fixedPrice: true, immutable: true },
+      { id: 2, name: 'Drache', price: 4.0, description: 'Ein wunderschöner Drache aus Stoff.', fixedPrice: true, immutable: true },
+      { id: 3, name: 'Custom', price: null, description: 'Der Preis wird manuell per Email mitgeteilt.', fixedPrice: false, immutable: true },
+      { id: 4, name: 'Mystery Box', price: 0, description: 'Gib deinen Wunschpreis ein und lege die Mystery Box in den Warenkorb.', fixedPrice: false, immutable: true },
+      { id: 5, name: 'Spende', price: 0, description: 'Gib deinen Wunschbetrag ein und unterstütze das Geschäft.', fixedPrice: false, immutable: true },
+    ];
+
+    let products = [];
+    let nextProductId = 6; // ab hier neue Produkte vergeben
+    let cart = [];
+    let orders = [];
+    let isAdmin = false;
+
+    // Produkte aus localStorage laden (zusätzlich zu immutable)
+    function loadProducts() {
+      const saved = localStorage.getItem('customProducts');
+      if (saved) {
+        try {
+          const customProducts = JSON.parse(saved);
+          products = [...immutableProducts, ...customProducts];
+          if (customProducts.length > 0) {
+            nextProductId = Math.max(...customProducts.map(p => p.id)) + 1;
+          }
+        } catch {
+          products = [...immutableProducts];
+        }
+      } else {
+        products = [...immutableProducts];
+      }
+    }
+
+    // Produkte speichern (nur benutzerdefinierte)
+    function saveProducts() {
+      const customProducts = products.filter(p => !p.immutable);
+      localStorage.setItem('customProducts', JSON.stringify(customProducts));
+    }
+
+    // Warenkorb laden
+    function loadCart() {
+      const savedCart = localStorage.getItem('cart');
+      if (savedCart) {
+        try {
+          cart = JSON.parse(savedCart);
+        } catch {
+          cart = [];
+        }
+      }
+    }
+
+    // Warenkorb speichern
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    // Bestellungen laden
+    function loadOrders() {
+      const savedOrders = localStorage.getItem('orders');
+      if (savedOrders) {
+        try {
+          orders = JSON.parse(savedOrders);
+        } catch {
+          orders = [];
+        }
+      }
+      renderOrders();
+    }
+
+    // Bestellungen speichern
+    function saveOrders() {
+      localStorage.setItem('orders', JSON.stringify(orders));
+    }
+
+    // Produkte anzeigen
+    function renderProducts() {
+      const container = document.getElementById('productList');
+      container.innerHTML = '';
+      products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        let priceText = product.fixedPrice && product.price !== null ? product.price.toFixed(2) + '€' : '';
+        if (product.name === 'Mystery Box' || product.name === 'Spende') {
+          priceText = '';
+        } else if (product.price === null) {
+          priceText = 'Preis wird per Email mitgeteilt';
+        }
+
+        card.innerHTML = `
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          ${product.name === 'Mystery Box' || product.name === 'Spende' ? `
+            <label for="priceInput${product.id}">Preis (€):</label>
+            <input type="number" min="0" step="0.01" id="priceInput${product.id}" placeholder="Preis eingeben" />
+          ` : `<p>Preis: ${priceText}</p>`}
+          <label for="qtyInput${product.id}">Menge:</label>
+          <input type="number" id="qtyInput${product.id}" min="1" value="1" />
+          <br />
+          <button onclick="addToCart(${product.id})">In den Warenkorb</button>
+          ${(!product.immutable) ? `<button onclick="removeProduct(${product.id})" style="margin-left:10px; background:#cc4444;">Löschen</button>` : ''}
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    // Produkte filtern
+    function filterProducts() {
+      const filter = document.getElementById('searchInput').value.toLowerCase();
+      const container = document.getElementById('productList');
+      container.childNodes.forEach(card => {
+        if (card.nodeType !== 1) return; // Element nodes only
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        if (title.includes(filter)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Produkt löschen (nur admin & nicht immutable)
+    function removeProduct(id) {
+      if (!isAdmin) {
+        alert('Nur Admin kann Produkte löschen.');
+        return;
+      }
+      const index = products.findIndex(p => p.id === id);
+      if (index !== -1 && !products[index].immutable) {
+        products.splice(index, 1);
+        saveProducts();
+        renderProducts();
+      }
+    }
+
+    // Produkt zum Warenkorb hinzufügen
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+
+      const qtyInput = document.getElementById('qtyInput' + id);
+      let qty = parseInt(qtyInput.value);
+      if (isNaN(qty) || qty < 1) {
+        alert('Bitte eine gültige Menge eingeben.');
+        return;
+      }
+
+      let price = product.price;
+      if (product.name === 'Mystery Box' || product.name === 'Spende') {
+        const priceInput = document.getElementById('priceInput' + id);
+        price = parseFloat(priceInput.value);
+        if (isNaN(price) || price < 0) {
+          alert('Bitte einen gültigen Preis eingeben.');
+          return;
+        }
+      }
+
+      // Custom hat keinen Preis (manuelle Email), daher Preis = 0 im Warenkorb
+      if (product.name === 'Custom') {
+        price = 0;
+      }
+
+      // Prüfe, ob das Produkt schon im Warenkorb ist
+      const cartItem = cart.find(item => item.id === id);
+      if (cartItem) {
+        cartItem.qty += qty;
+        cartItem.price = price; // Preis aktualisieren bei mystery/spende
+      } else {
+        cart.push({ id, name: product.name, price, qty });
+      }
+
+      saveCart();
+      renderCart();
+    }
+
+    // Warenkorb rendern
+    function renderCart() {
+      const ul = document.getElementById('cart-items');
+      ul.innerHTML = '';
+      let total = 0;
+
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${item.name} (${item.price.toFixed(2)}€)</span>
+          <input type="number" min="1" value="${item.qty}" onchange="updateQty(${item.id}, this.value)" />
+          <button onclick="removeFromCart(${item.id})" style="margin-left: 10px; background:#cc4444; color: white; border:none; border-radius: 4px; padding: 3px 7px; cursor:pointer;">Entfernen</button>
+        `;
+        ul.appendChild(li);
+        total += item.price * item.qty;
+      });
+
+      document.getElementById('total-price').textContent = 'Gesamtpreis: ' + total.toFixed(2) + '€';
+    }
+
+    // Menge im Warenkorb aktualisieren
+    function updateQty(id, newQty) {
+      newQty = parseInt(newQty);
+      if (isNaN(newQty) || newQty < 1) {
+        alert('Menge muss mindestens 1 sein.');
+        renderCart();
+        return;
+      }
+      const item = cart.find(i => i.id === id);
+      if (item) {
+        item.qty = newQty;
+        saveCart();
+        renderCart();
+      }
+    }
+
+    // Produkt aus Warenkorb entfernen
+    function removeFromCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      saveCart();
+      renderCart();
+    }
+
+    // Admin Login
+    function adminLogin() {
+      const pw = prompt('Bitte Admin-Passwort eingeben:');
+      if (pw === 'Jakob') {
+        isAdmin = true;
+        document.getElementById('adminControls').style.display = 'flex';
+        alert('Admin-Modus aktiviert');
+        renderProducts();
+        renderOrders();
+      } else {
+        alert('Falsches Passwort!');
+      }
+    }
+
+    // Admin Logout
+    function adminLogout() {
+      isAdmin = false;
+      document.getElementById('adminControls').style.display = 'none';
+      alert('Admin-Modus deaktiviert');
+      renderProducts();
+    }
+
+    // Neues Produkt hinzufügen (Admin)
+    function addNewProduct() {
+      const name = prompt('Produktname:');
+      if (!name) return alert('Name darf nicht leer sein.');
+      const description = prompt('Beschreibung:') || '';
+      let priceInput = prompt('Preis (z.B. 4.50) oder leer für manuell per Email:');
+      let price = priceInput !== null && priceInput.trim() !== '' ? parseFloat(priceInput.replace(',', '.')) : null;
+      if (priceInput !== null && priceInput.trim() !== '' && (isNaN(price) || price < 0)) {
+        return alert('Ungültiger Preis.');
+      }
+
+      const newProduct = {
+        id: nextProductId++,
+        name,
+        description,
+        price,
+        fixedPrice: price !== null,
+        immutable: false
+      };
+      products.push(newProduct);
+      saveProducts();
+      renderProducts();
+    }
+
+    // Bestellung abschicken
+    document.getElementById('bestellForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (cart.length === 0) {
+        alert('Dein Warenkorb ist leer!');
+        return;
+      }
+
+      const name = this.name.value.trim();
+      const adresse = this.adresse.value.trim();
+      const email = this.email.value.trim();
+
+      if (!name || !adresse || !email) {
+        alert('Bitte alle Felder ausfüllen!');
+        return;
+      }
+
+      const order = {
+        id: Date.now(),
+        name,
+        adresse,
+        email,
+        items: [...cart],
+        date: new Date().toISOString()
+      };
+
+      orders.push(order);
+      saveOrders();
+
+      alert(`Danke für deine Bestellung, ${name}! Wir werden uns bald per Email bei dir melden.`);
+
+      cart = [];
+      saveCart();
+      renderCart();
+
+      this.reset();
+    });
+
+    // Bestellungen anzeigen im Admin-Bereich
+    function renderOrders() {
+      const ordersUl = document.getElementById('ordersUl');
+      if (!ordersUl) return;
+      ordersUl.innerHTML = '';
+
+      if (orders.length === 0) {
+        ordersUl.innerHTML = '<li>Keine Bestellungen vorhanden.</li>';
+        return;
+      }
+
+      orders.forEach(order => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${order.name}</strong> (${new Date(order.date).toLocaleString()})<br>
+          Adresse: ${order.adresse}<br>
+          Email: ${order.email}<br>
+          Produkte:<br>
+          <ul>
+            ${order.items.map(item => `<li>${item.qty}x ${item.name} (${item.price.toFixed(2)}€)</li>`).join('')}
+          </ul>
+        `;
+        ordersUl.appendChild(li);
+      });
+    }
+
+    window.onload = function () {
+      loadProducts();
+      loadCart();
+      loadOrders();
+      renderProducts();
+      renderCart();
+
+      document.getElementById('addProductBtn').addEventListener('click', () => {
+        if (isAdmin) addNewProduct();
+        else alert('Nur Admin kann Produkte hinzufügen.');
+      });
+
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        adminLogout();
+      });
+
+      // Zeige Admin Login Prompt direkt beim Laden (optional)
+      // adminLogin();
+    };
+
+    // Optional: Admin Login per Button (hier als Beispiel)
+    const header = document.querySelector('header');
+    const adminLoginBtn = document.createElement('button');
+    adminLoginBtn.textContent = 'Admin Login';
+    adminLoginBtn.style.marginLeft = '10px';
+    adminLoginBtn.style.padding = '8px 12px';
+    adminLoginBtn.style.fontSize = '1rem';
+    adminLoginBtn.style.cursor = 'pointer';
+    adminLoginBtn.onclick = adminLogin;
+    header.appendChild(adminLoginBtn);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<a href="file:///C:/Users/Jakob/OneDrive%20-%20Immanuel-Kant-Gymnasium/Dokumente/webseite/mitarbeiter.html" class="button-link">Back</a><br>
+<input type="text" id="name" name="name" placeholder="Name">
+<input type="text" id="preis" name="preis" placeholder="Preis">
+<input type="text" id="be" name="be" placeholder="Beschreibung">
+
+
+
+
+
+
+
+
+<textarea id="text"></textarea>
+<button onclick="download(this.previousElementSibling.value)">Download</button>
+
+<script>
+//Geyoinkt von https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server
+function download(text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', "yourText.txt");
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
+</script>

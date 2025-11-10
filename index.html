@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jakobs Onlineshop</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #AAFFFF;
+    margin: 0;
+    padding: 0 20px 50px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  header {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  header button {
+    background-color: #00AA00;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  header button:hover {
+    background-color: #007700;
+  }
+  #logo {
+    width: 100px;
+    height: auto;
+    margin: 30px 0 10px 0;
+    user-select: none;
+  }
+  h1 {
+    color: #FF0000;
+    margin: 10px 0 30px 0;
+    text-align: center;
+  }
+  .rotator {
+    max-width: 900px;
+    background: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px #888888;
+    font-size: 18px;
+    margin-bottom: 30px;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-images {
+    max-width: 900px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  .product-images img {
+    width: 400px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #666;
+  }
+  /* Kommentarfunktion */
+  #comment-section {
+    width: 100%;
+    max-width: 900px;
+    background: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px #888888;
+    margin-bottom: 40px;
+  }
+  #comment-section h2 {
+    margin-top: 0;
+    color: #003300;
+  }
+  form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #004400;
+  }
+  form input[type="text"],
+  form input[type="email"],
+  form textarea,
+  form input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+    border: 1px solid #999;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  form textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  form button {
+    margin-top: 15px;
+    background-color: #007700;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  form button:hover {
+    background-color: #004400;
+  }
+  .comments-list {
+    margin-top: 30px;
+    max-height: 350px;
+    overflow-y: auto;
+  }
+  .comment {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    position: relative;
+  }
+  .comment strong {
+    color: #006600;
+  }
+  .comment small {
+    color: #555;
+    font-style: italic;
+  }
+  .comment-text {
+    margin: 6px 0;
+  }
+  .comment-actions {
+    font-size: 14px;
+    color: #006600;
+  }
+  .comment-actions button {
+    background: none;
+    border: none;
+    color: #007700;
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  .comment-actions button:hover {
+    text-decoration: underline;
+  }
+  footer {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  footer button {
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  footer button:hover {
+    color: #000;
+  }
+</style>
+</head>
+<body>
+
+<img id="logo" src="logo.png" alt="Logo" />
+
+<header>
+  <button onclick="window.location.href='shop.html'">Shop</button>
+  <button onclick="window.location.href='mitarbeiter.html'">Mitarbeiter</button>
+  <button onclick="window.location.href='kart.html'">Kart</button>
+</header>
+
+<h1>Jakobs Onlineshop</h1>
+
+<div class="rotator" id="rotator-text">
+  Schön, dass du meine Webseite gefunden hast! Kaufe einzigartige 3D-gedruckte Spielzeuge mit viel Liebe hergestellt.
+</div>
+
+<div class="product-images">
+  <img src="Kegel.png" alt="Kegel" />
+  <img src="Gyro.png" alt="Gyro" />
+</div>
+
+<section id="comment-section">
+  <h2>Kommentare</h2>
+  <form id="comment-form">
+    <label for="username">Benutzername:</label>
+    <input type="text" id="username" name="username" placeholder="Dein Name" required />
+
+    <label for="email">E-Mail Adresse:</label>
+    <input type="email" id="email" name="email" placeholder="Deine E-Mail" required />
+
+    <label for="comment">Kommentar:</label>
+    <textarea id="comment" name="comment" placeholder="Dein Kommentar..." required></textarea>
+
+    <label for="adminPass">Admin Passwort (optional):</label>
+    <input type="password" id="adminPass" name="adminPass" placeholder="Nur für Admins" />
+
+    <button type="submit">Kommentar absenden</button>
+  </form>
+
+  <div class="comments-list" id="comments-list"></div>
+</section>
+
+<footer>
+  <button onclick="window.location.href='impressum.html'">Impressum</button>
+</footer>
+
+<script>
+  // Text Rotator mit 5 Sätzen
+  const texts = [
+    "Schön, dass du meine Webseite gefunden hast! Kaufe einzigartige 3D-gedruckte Spielzeuge mit viel Liebe hergestellt.",
+    "Alle Produkte sind handgefertigt und von höchster Qualität.",
+    "Unterstütze meine Arbeit mit einem Kauf oder einer Spende.",
+    "Entdecke spannende neue Designs und Innovationen.",
+    "Bei Fragen stehe ich dir jederzeit gerne zur Verfügung."
+  ];
+  let rotatorIndex = 0;
+  const rotator = document.getElementById('rotator-text');
+
+  setInterval(() => {
+    rotatorIndex = (rotatorIndex + 1) % texts.length;
+    rotator.textContent = texts[rotatorIndex];
+  }, 5000);
+
+  // Kommentare speichern, laden, löschen, liken/disliken etc.
+  const commentForm = document.getElementById('comment-form');
+  const commentsList = document.getElementById('comments-list');
+
+  // Admin Passwort
+  const ADMIN_PASS = "Jakob";
+
+  // Lade Kommentare aus localStorage
+  let comments = JSON.parse(localStorage.getItem('comments') || '[]');
+
+  function saveComments() {
+    localStorage.setItem('comments', JSON.stringify(comments));
+  }
+
+  function renderComments() {
+    commentsList.innerHTML = '';
+    comments.forEach((c, i) => {
+      const div = document.createElement('div');
+      div.className = 'comment';
+      div.innerHTML = `
+        <strong>${escapeHtml(c.username)}</strong> 
+        <small>(${escapeHtml(c.email)})</small><br/>
+        <div class="comment-text">${escapeHtml(c.text)}</div>
+        <div class="comment-actions">
+          <button onclick="likeComment(${i})">👍 ${c.likes || 0}</button>
+          <button onclick="dislikeComment(${i})">👎 ${c.dislikes || 0}</button>
+          <button onclick="deleteComment(${i}, false)">Löschen</button>
+          ${c.admin ? '<button onclick="deleteComment('+i+', true)">Admin Löschen</button>' : ''}
+        </div>
+      `;
+      commentsList.appendChild(div);
+    });
+  }
+
+  // Escape HTML to avoid XSS
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  commentForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const username = commentForm.username.value.trim();
+    const email = commentForm.email.value.trim();
+    const text = commentForm.comment.value.trim();
+    const adminPass = commentForm.adminPass.value;
+
+    if (!username || !email || !text) {
+      alert("Bitte alle Pflichtfelder ausfüllen.");
+      return;
+    }
+
+    // Kommentar erstellen
+    const newComment = {
+      username,
+      email,
+      text,
+      likes: 0,
+      dislikes: 0,
+      admin: false,
+    };
+
+    // Prüfen, ob Admin-Passwort richtig ist
+    if (adminPass === ADMIN_PASS) {
+      newComment.admin = true;
+    }
+
+    comments.push(newComment);
+    saveComments();
+    renderComments();
+
+    commentForm.reset();
+  });
+
+  // Likes & Dislikes
+  function likeComment(index) {
+    comments[index].likes = (comments[index].likes || 0) + 1;
+    saveComments();
+    renderComments();
+  }
+  function dislikeComment(index) {
+    comments[index].dislikes = (comments[index].dislikes || 0) + 1;
+    saveComments();
+    renderComments();
+  }
+
+  // Löschen (nur eigener Kommentar oder Admin)
+  function deleteComment(index, adminDelete) {
+    // Admin-Löschung erlaubt alles
+    if (adminDelete) {
+      const adminPass = prompt("Admin Passwort eingeben:");
+      if (adminPass !== ADMIN_PASS) {
+        alert("Falsches Admin Passwort!");
+        return;
+      }
+    } else {
+      // Ohne Admin: Benutzername muss übereinstimmen oder Admin darf alles löschen
+      const currentUser = prompt("Bitte deinen Benutzernamen zum Löschen eingeben:");
+      if (!currentUser || currentUser !== comments[index].username) {
+        alert("Du kannst nur deine eigenen Kommentare löschen!");
+        return;
+      }
+    }
+    if (confirm("Willst du diesen Kommentar wirklich löschen?")) {
+      comments.splice(index, 1);
+      saveComments();
+      renderComments();
+    }
+  }
+
+  // Initiales Rendering
+  renderComments();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Bestellen</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    a {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>Bestellformular</h2>
+  <form onsubmit="submitOrder(event)">
+    <label for="vorname">Vorname</label>
+    <input type="text" id="vorname" name="vorname" required>
+
+    <label for="nachname">Nachname</label>
+    <input type="text" id="nachname" name="nachname" required>
+
+    <label for="strasse">Straße</label>
+    <input type="text" id="strasse" name="strasse" required>
+
+    <label for="hausnummer">Hausnummer</label>
+    <input type="text" id="hausnummer" name="hausnummer" required>
+
+    <label for="plz">PLZ</label>
+    <input type="text" id="plz" name="plz" required>
+
+    <label for="ort">Ort</label>
+    <input type="text" id="ort" name="ort" required>
+
+    <label for="email">E-Mail</label>
+    <input type="email" id="email" name="email" required>
+
+    <button type="submit">Jetzt bestellen</button>
+  </form>
+
+  <a href="kart.html">🛒 Zum Warenkorb</a>
+
+  <script>
+    function submitOrder(event) {
+      event.preventDefault();
+      alert("Bestellung wurde erfolgreich abgeschickt!");
+      // Hier könnte man die Daten an einen Server senden oder in localStorage speichern
+    }
+  </script>
+</body>
+</html>

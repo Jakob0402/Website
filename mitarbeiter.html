@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Links und Bestellungen mit Versandstatus und Bestellformular</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 20px auto 50px;
+            max-width: 900px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .button-link {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 10px 10px 0;
+            text-align: center;
+            width: 200px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .button-link:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+        .button-link:active {
+            background-color: #3e8e41;
+            transform: scale(1);
+        }
+        #ordersContainer {
+            margin-top: 50px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+        #ordersContainer h2 {
+            color: #2d98da;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        #ordersList {
+            list-style: none;
+            padding: 0;
+            max-height: 400px;
+            overflow-y: auto;
+            border-top: 1px solid #ddd;
+        }
+        #ordersList li {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+            font-size: 0.9rem;
+            color: #333;
+            position: relative;
+        }
+        .status {
+            display: inline-block;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s;
+        }
+        .not-sent {
+            background-color: #f44336;
+            color: white;
+        }
+        .not-sent:hover {
+            opacity: 0.8;
+        }
+        form {
+            margin-top: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        form div {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Wählen Sie eine Seite</h1>
+
+    <a href="file:///C:/Users/Jakob/OneDrive%20-%20Immanuel-Kant-Gymnasium/Dokumente/webseite/shop.html" class="button-link">Shop</a>
+    <a href="file:///C:/Users/Jakob/OneDrive%20-%20Immanuel-Kant-Gymnasium/Dokumente/webseite/index.html" class="button-link">Home</a>
+    <a href="file:///C:/Users/Jakob/OneDrive%20-%20Immanuel-Kant-Gymnasium/Dokumente/webseite/bestellen.html" class="button-link">Bestellen</a>
+
+    <div id="ordersContainer">
+        <h2>Bestellungen</h2>
+        <ul id="ordersList">
+            <li>Lade Bestellungen...</li>
+        </ul>
+    </div>
+
+    <form id="orderForm">
+        <h2>Neue Bestellung hinzufügen (Debug)</h2>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" required />
+        </div>
+        <div>
+            <label for="adresse">Adresse:</label>
+            <input type="text" id="adresse" required />
+        </div>
+        <div>
+            <label for="email">E-Mail:</label>
+            <input type="email" id="email" required />
+        </div>
+        <div>
+            <label for="itemName">Produktname:</label>
+            <input type="text" id="itemName" required />
+        </div>
+        <div>
+            <label for="itemQty">Menge:</label>
+            <input type="number" id="itemQty" min="1" value="1" required />
+        </div>
+        <div>
+            <label for="itemPrice">Preis (€):</label>
+            <input type="number" id="itemPrice" min="0" step="0.01" value="0.00" required />
+        </div>
+        <button type="submit">Bestellung speichern</button>
+    </form>
+
+    <script>
+        function loadOrders() {
+            const savedOrders = localStorage.getItem('orders');
+            if (!savedOrders) return [];
+            try {
+                return JSON.parse(savedOrders);
+            } catch {
+                return [];
+            }
+        }
+
+        function saveOrders(orders) {
+            localStorage.setItem('orders', JSON.stringify(orders));
+        }
+
+        function markAsSentAndDelete(index) {
+            const orders = loadOrders();
+            if (confirm('Bestellung als versendet markieren und löschen?')) {
+                orders.splice(index, 1); // Bestellung löschen
+                saveOrders(orders);
+                renderOrders();
+            }
+        }
+
+        function renderOrders() {
+            const orders = loadOrders();
+            const ordersList = document.getElementById('ordersList');
+
+            if (orders.length === 0) {
+                ordersList.innerHTML = '<li>Keine Bestellungen vorhanden.</li>';
+                return;
+            }
+
+            ordersList.innerHTML = '';
+
+            orders.forEach((order, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <strong>${order.name}</strong> (${new Date(order.date).toLocaleString()})
+                    <span class="status not-sent" data-index="${index}" title="Als versendet markieren und löschen">Nicht versendet</span><br>
+                    Adresse: ${order.adresse}<br>
+                    Email: ${order.email}<br>
+                    Produkte:
+                    <ul>
+                        ${order.items.map(item => `<li>${item.qty}x ${item.name} (${item.price.toFixed(2)}€)</li>`).join('')}
+                    </ul>
+                `;
+
+                ordersList.appendChild(li);
+            });
+
+            document.querySelectorAll('.status').forEach(el => {
+                el.addEventListener('click', () => {
+                    const idx = parseInt(el.getAttribute('data-index'));
+                    markAsSentAndDelete(idx);
+                });
+            });
+        }
+
+        // Formular zum Hinzufügen von Bestellungen
+        document.getElementById('orderForm').addEventListener('submit', event => {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const adresse = document.getElementById('adresse').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const itemName = document.getElementById('itemName').value.trim();
+            const itemQty = parseInt(document.getElementById('itemQty').value);
+            const itemPrice = parseFloat(document.getElementById('itemPrice').value);
+
+            if (!name || !adresse || !email || !itemName || itemQty <= 0 || itemPrice < 0) {
+                alert('Bitte alle Felder korrekt ausfüllen!');
+                return;
+            }
+
+            const newOrder = {
+                name,
+                adresse,
+                email,
+                date: new Date().toISOString(),
+                items: [
+                    {
+                        name: itemName,
+                        qty: itemQty,
+                        price: itemPrice
+                    }
+                ]
+            };
+
+            const orders = loadOrders();
+            orders.push(newOrder);
+            saveOrders(orders);
+
+            renderOrders();
+
+            event.target.reset();
+        });
+
+        window.onload = renderOrders;
+    </script>
+
+</body>
+</html>
